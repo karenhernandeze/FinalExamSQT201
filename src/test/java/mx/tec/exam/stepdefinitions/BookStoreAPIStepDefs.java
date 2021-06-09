@@ -2,6 +2,7 @@ package mx.tec.exam.stepdefinitions;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
@@ -69,11 +70,18 @@ public class BookStoreAPIStepDefs {
 				HttpMethod.POST, entity, String.class);
 	}
 
-
 	@Then("a {string} property is provided")
 	public void a_property_is_provided(String property) throws JsonMappingException, JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(response.getBody());
 		assertFalse(root.path(property).isMissingNode());
 	}
+	
+	@Then("a {string} property is {string}")
+	public void a_property_is(String string, String property) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(response.getBody());
+		assertTrue(root.path(property).isMissingNode());
+	}
+
 }
