@@ -64,4 +64,23 @@ public class BookStoreWebStepDefs {
         assertEquals(string, title);
         driver.quit();
 	}
+	
+	@Given("no credentials")
+	public void no_credentials() {
+		// Do nothing
+	}
+
+	@Then("the users sees a red border color")
+	public void the_users_sees_a_red_border_color() throws InterruptedException {
+		// Since this is a One Single Page application. Use the sleep to wait for the page to be updated        
+        Thread.sleep(5000);
+        
+        By.className("login-wrapper");
+		By.id("userform");
+		By.id("userName-wrapper");
+		String borderColor = driver.findElement(By.id("userName")).getCssValue("border-color");   
+
+        assertEquals("rgb(220, 53, 69)", borderColor);
+        driver.quit();
+	}
 }

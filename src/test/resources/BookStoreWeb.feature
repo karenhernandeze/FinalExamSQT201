@@ -10,3 +10,7 @@ Feature: Book Store Web Log In
     When the client calls /login page with username 'karenhdez' and password 'Karen@1234a'
     Then the message 'Invalid username or password!' is displayed
     
+  Scenario: Login with empty credentials
+  	Given no credentials
+    When the client calls /login page with username '' and password ''
+    Then the users sees a red border color
