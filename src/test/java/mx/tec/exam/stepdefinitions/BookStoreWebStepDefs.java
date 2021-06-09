@@ -45,4 +45,23 @@ public class BookStoreWebStepDefs {
         assertEquals(pageTitle, title);
         driver.quit();
     }
+	
+	@Given("a not registered user")
+	public void a_not_registered_user() {
+		// Do nothing
+	}
+	
+	@Then("the message {string} is displayed")
+	public void the_message_is_displayed(String string) throws InterruptedException {
+		// Since this is a One Single Page application. Use the sleep to wait for the page to be updated        
+        Thread.sleep(5000);
+        
+        By.className("login-wrapper");
+		By.id("userform");
+		By.id("output");
+		String title = driver.findElement(By.id("name")).getText();                
+        
+        assertEquals(string, title);
+        driver.quit();
+	}
 }
