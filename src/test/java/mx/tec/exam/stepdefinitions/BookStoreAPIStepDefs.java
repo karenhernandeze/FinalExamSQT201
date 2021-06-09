@@ -83,5 +83,33 @@ public class BookStoreAPIStepDefs {
 		JsonNode root = mapper.readTree(response.getBody());
 		assertTrue(root.path(property).isMissingNode());
 	}
+	
+	@Given("an existing user with username {string} and password {string}")
+	public void an_existing_user_with_username_and_password(String username, String password) {
+		Map<String, String> body = new HashMap<>();
+		body.put("userName", username);
+		body.put("password", password);
+		
+		HttpEntity<Map<String, String>> entity = new HttpEntity<Map<String, String>>(body, headers);
+		
+		response = restTemplate.exchange("https://demoqa.com/Account/v1/GenerateToken",
+				HttpMethod.POST, entity, String.class);
+	}
 
+	@When("the client calls \\/BookStore\\/v1\\/Book with ISBN {string}")
+	public void the_client_calls_book_store_v1_book_with_isbn(String id) {
+		
+		HttpEntity<Map<String, String>> entity = new HttpEntity<Map<String, String>>(headers);
+		id = "9781449325862";
+		response = restTemplate.exchange("https://demoqa.com/BookStore/v1/Book?ISBN="+id,
+				HttpMethod.GET, entity, String.class);
+	}
+
+	@Then("the client receives book title {string}")
+	public void the_client_receives_book_title(String title) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(response.getBody());
+		System.out.print(root);
+		assertEquals(title, root.path("title").asText());
+	}
 }
