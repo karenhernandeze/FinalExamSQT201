@@ -56,4 +56,24 @@ public class BookStoreAPIStepDefs {
 		String body = response.getBody();
 		assertEquals(responseMessage, body);
 	}
+	
+	@When("the client calls \\/Account\\/v1\\/GenerateToken with username {string} and password {string}")
+	public void the_client_calls_account_v1_generate_token_with_username_and_password(String username, String password) {
+		Map<String, String> body = new HashMap<>();
+		body.put("userName", username);
+		body.put("password", password);
+		
+		HttpEntity<Map<String, String>> entity = new HttpEntity<Map<String, String>>(body, headers);
+		
+		response = restTemplate.exchange("https://demoqa.com/Account/v1/GenerateToken",
+				HttpMethod.POST, entity, String.class);
+	}
+
+
+	@Then("a {string} property is provided")
+	public void a_property_is_provided(String property) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(response.getBody());
+		assertFalse(root.path(property).isMissingNode());
+	}
 }
